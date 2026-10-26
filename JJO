@@ -1,0 +1,37 @@
+local Rayfield = loadstring(game:HttpGet(
+    "https://sirius.menu/rayfield"
+))()
+
+local Window = Rayfield:CreateWindow({
+    Name = "Lucky Block",
+    LoadingTitle = "Lucky Block",
+    LoadingSubtitle = "Spawn System",
+    ConfigurationSaving = {
+        Enabled = false
+    }
+})
+
+local Tab = Window:CreateTab("Main", 4483362458)
+
+local Running = false
+
+Tab:CreateToggle({
+    Name = "Auto Spawn Lucky Block",
+    CurrentValue = false,
+    Flag = "AutoSpawn",
+    Callback = function(Value)
+        Running = Value
+
+        if Running then
+            task.spawn(function()
+                while Running do
+                    game:GetService("ReplicatedStorage")
+                        :WaitForChild("SpawnLuckyBlock")
+                        :FireServer()
+
+                    task.wait(1)
+                end
+            end)
+        end
+    end
+})
